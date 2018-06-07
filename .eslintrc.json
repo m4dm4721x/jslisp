@@ -11,6 +11,7 @@
     "compat"
   ],
   "rules": {
-    "compat/compat": 2
+    "compat/compat": 2,
+    "max-len": [2, 160, 4]
   }
 }
