@@ -5,9 +5,7 @@
   "license": "MIT",
   "scripts": {
     "start": "babel-node src",
-    "test": "eslint src && flow && jest --coverage",
-    "precommit": "yarn test",
-    "prepush": "yarn test"
+    "test": "eslint src && flow && jest --coverage"
   },
   "browserslist": [
     "> 1%"
@@ -30,6 +28,8 @@
     "jest": "^23.1.0"
   },
   "dependencies": {
-    "enumify": "^1.0.4"
+    "enumify": "^1.0.4",
+    "inquirer": "^6.0.0",
+    "vorpal": "^1.12.0"
   }
 }

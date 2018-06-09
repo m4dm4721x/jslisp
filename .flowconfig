@@ -9,5 +9,6 @@ flow-typed
 
 [options]
 suppress_comment= \\(.\\|\n\\)*\\flow-disable-next-line
+munge_underscores=true
 
 [strict]

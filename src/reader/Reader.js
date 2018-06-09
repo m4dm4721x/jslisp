@@ -1,20 +1,24 @@
 // @flow
 
-import TokenKind from './TokenKind';
+import Token from './Token';
 import Lexer from './Lexer';
 
-function parse(input: string): Object {
-  const lexer = new Lexer(input);
+function reportError(token: Token) {
+  throw new Error(`syntax error at (${token.row}:${token.column})`);
+}
+
+function read(input: string): mixed {
+  const lexer: Lexer = new Lexer(input);
   let result;
   const stack = [];
-  let token = lexer.getNextToken();
-  while (token.tokenKind !== TokenKind.END_OF_INPUT) {
+  let token: Token = lexer.getNextToken();
+  while (!token.isOfKind('END_OF_INPUT')) {
     if (result !== undefined) {
-      throw new Error('syntax error');
+      reportError(token);
     }
-    if (token.tokenKind === TokenKind.LEFT_PARENTHESIS) {
+    if (token.isOfKind('LEFT_PARENTHESIS')) {
       stack.push([]);
-    } else if (token.tokenKind === TokenKind.RIGHT_PARENTHESIS) {
+    } else if (token.isOfKind('RIGHT_PARENTHESIS')) {
       if (stack.length > 0) {
         const list = stack.pop();
         if (stack.length > 0) {
@@ -23,7 +27,7 @@ function parse(input: string): Object {
           result = list;
         }
       } else {
-        throw new Error('syntax error');
+        reportError(token);
       }
     } else if (stack.length === 0) {
       result = token.lexeme;
@@ -33,9 +37,9 @@ function parse(input: string): Object {
     token = lexer.getNextToken();
   }
   if (stack.length > 0) {
-    throw new Error('syntax error');
+    throw new Error('unexpected end of input');
   }
   return result;
 }
 
-export default parse;
+export default read;
