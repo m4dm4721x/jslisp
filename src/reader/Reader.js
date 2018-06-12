@@ -9,7 +9,7 @@ function reportError(token: Token) {
 
 function read(input: string): mixed {
   const lexer: Lexer = new Lexer(input);
-  let result;
+  let result: mixed;
   const stack = [];
   let token: Token = lexer.getNextToken();
   while (!token.isOfKind('END_OF_INPUT')) {

@@ -1,5 +1,7 @@
 // @flow
 
+import chalk from 'chalk';
+
 import interpret from './Interpreter';
 
 const repl = require('repl');
@@ -18,11 +20,14 @@ function replEval(cmd, context, filename, callback) {
 }
 
 function replWriter(output) {
+  if (output === undefined) {
+    return chalk.bold.red('undefined');
+  }
   return output;
 }
 
 repl.start({
-  prompt: 'µLisp > ',
+  prompt: `${chalk.white.bgBlue.bold(' µ')}${chalk.white.bgBlue('Lisp ')}${chalk.blue('▶')} `,
   eval: replEval,
   writer: replWriter,
 });

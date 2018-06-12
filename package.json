@@ -28,6 +28,7 @@
     "jest": "^23.1.0"
   },
   "dependencies": {
+    "chalk": "^2.4.1",
     "enumify": "^1.0.4",
     "inquirer": "^6.0.0",
     "vorpal": "^1.12.0"
