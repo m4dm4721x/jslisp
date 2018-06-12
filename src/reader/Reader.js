@@ -2,14 +2,15 @@
 
 import Token from './Token';
 import Lexer from './Lexer';
+import type { Expression } from '../evaluator/Expression';
 
 function reportError(token: Token) {
   throw new Error(`syntax error at (${token.row}:${token.column})`);
 }
 
-function read(input: string): mixed {
+function read(input: string): Expression {
   const lexer: Lexer = new Lexer(input);
-  let result: mixed;
+  let result: Expression;
   const stack = [];
   let token: Token = lexer.getNextToken();
   while (!token.isOfKind('END_OF_INPUT')) {

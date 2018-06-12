@@ -120,3 +120,23 @@ test('27', () => {
   const environment: Environment = Environment.newDefaultEnvironment();
   expect(evaluate(read('(null (quote ()))'), environment)).toEqual('t');
 });
+
+test('28', () => {
+  const environment: Environment = Environment.newDefaultEnvironment();
+  expect(evaluate(read('(and (atom (quote a)) (eq (quote a) (quote a)))'), environment)).toEqual('t');
+});
+
+test('29', () => {
+  const environment: Environment = Environment.newDefaultEnvironment();
+  expect(evaluate(read('(and (atom (quote a)) (eq (quote a) (quote b)))'), environment)).toEqual([]);
+});
+
+test('30', () => {
+  const environment: Environment = Environment.newDefaultEnvironment();
+  expect(evaluate(read('(not (eq (quote a) (quote a)))'), environment)).toEqual([]);
+});
+
+test('31', () => {
+  const environment: Environment = Environment.newDefaultEnvironment();
+  expect(evaluate(read('(not (eq (quote a) (quote b)))'), environment)).toEqual('t');
+});
