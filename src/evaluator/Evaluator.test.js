@@ -4,6 +4,11 @@ import read from '../reader/Reader';
 import Evaluator from './Evaluator';
 import Environment from './Environment';
 
+// test('asd', () => {
+//   expect(Evaluator.evaluate(read('(defun fib (n) (cond ((eq n NIL) x) (() (x)) ())'), Environment.newDefaultEnvironment())).toEqual('a');
+// });
+
+
 test('1', () => {
   expect(Evaluator.evaluate(read('(quote a)'), Environment.newDefaultEnvironment())).toEqual('a');
 });
