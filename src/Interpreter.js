@@ -1,14 +1,20 @@
 // @flow
 
 import read from './reader/Reader';
-import evaluate from './evaluator/Evaluator';
+import Evaluator from './evaluator/Evaluator';
 import print from './Printer';
 import Environment from './evaluator/Environment';
 
-const environment: Environment = Environment.newDefaultEnvironment();
+class Interpreter {
+  +environment: Environment;
 
-function interpret(input: string): mixed {
-  return print(evaluate(read(input), environment));
+  constructor() {
+    this.environment = Environment.newDefaultEnvironment();
+  }
+
+  interpret(input: string): string | typeof undefined {
+    return print(Evaluator.evaluate(read(input), this.environment));
+  }
 }
 
-export default interpret;
+export default Interpreter;

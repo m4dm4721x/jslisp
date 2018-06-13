@@ -2,14 +2,16 @@
 
 import chalk from 'chalk';
 
-import interpret from './Interpreter';
+import Interpreter from './Interpreter';
 
 const repl = require('repl');
 
-function replEval(cmd, context, filename, callback) {
+const interpreter: Interpreter = new Interpreter();
+
+function replEval(cmd: string, context, filename, callback) {
   let result;
   try {
-    result = interpret(cmd);
+    result = interpreter.interpret(cmd);
   } catch (e) {
     if (/^unexpected end of input$/.test(e.message)) {
       return callback(new repl.Recoverable(e));

@@ -1,6 +1,11 @@
 // @flow
 
-import interpret from './Interpreter';
+import Interpreter from './Interpreter';
+
+function interpret(input: string): string | typeof undefined {
+  const interpreter: Interpreter = new Interpreter();
+  return interpreter.interpret(input);
+}
 
 test('1', () => {
   expect(interpret('(quote a)')).toEqual('a');
@@ -15,7 +20,7 @@ test('3', () => {
 });
 
 test('4', () => {
-  expect(interpret('(atom (quote (a b c)))')).toBe('()');
+  expect(interpret('(atom (quote (a b c)))')).toBe('NIL');
 });
 
 test('5', () => {
@@ -27,7 +32,7 @@ test('6', () => {
 });
 
 test('7', () => {
-  expect(interpret('(atom (quote (atom (quote a))))')).toBe('()');
+  expect(interpret('(atom (quote (atom (quote a))))')).toBe('NIL');
 });
 
 test('8', () => {
@@ -35,7 +40,7 @@ test('8', () => {
 });
 
 test('9', () => {
-  expect(interpret('(eq (quote a) (quote b))')).toBe('()');
+  expect(interpret('(eq (quote a) (quote b))')).toBe('NIL');
 });
 
 test('10', () => {
@@ -68,4 +73,8 @@ test('16', () => {
 
 test('17', () => {
   expect(interpret('(cond ((eq (quote a) (quote b)) (quote first)) ((atom (quote a)) (quote second)))')).toEqual('second');
+});
+
+test('18', () => {
+  expect(interpret('')).toBeUndefined();
 });

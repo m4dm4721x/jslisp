@@ -2,7 +2,7 @@
 
 import Token from './Token';
 import Lexer from './Lexer';
-import type { Expression } from '../evaluator/Expression';
+import type { Expression } from '../expression/Expression';
 
 function reportError(token: Token) {
   throw new Error(`syntax error at (${token.row}:${token.column})`);
