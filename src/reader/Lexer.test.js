@@ -6,7 +6,7 @@ test('illegal input throws an error', () => {
   function parseInput() {
     new Lexer('$').getNextToken();
   }
-  expect(parseInput).toThrowError(/^illegal character at position 0$/);
+  expect(parseInput).toThrowError(/^illegal character \$ at position 0$/);
 });
 
 test('an empty input is tokenized correctly', () => {
@@ -30,45 +30,42 @@ test('an empty line is tokenized correctly', () => {
 
 test('a simple expression is tokenized correctly', () => {
   const lexer: Lexer = new Lexer('(abc (def ghi))');
-  expect(lexer.getNextToken()).toEqual({
+  expect(lexer.getNextToken()).toMatchObject({
     tokenKind: 'LEFT_PARENTHESIS',
     row: 1,
     column: 1,
   });
-  expect(lexer.getNextToken()).toEqual({
+  expect(lexer.getNextToken()).toMatchObject({
     tokenKind: 'ATOM',
-    lexeme: 'abc',
     row: 1,
     column: 2,
   });
-  expect(lexer.getNextToken()).toEqual({
+  expect(lexer.getNextToken()).toMatchObject({
     tokenKind: 'LEFT_PARENTHESIS',
     row: 1,
     column: 6,
   });
-  expect(lexer.getNextToken()).toEqual({
+  expect(lexer.getNextToken()).toMatchObject({
     tokenKind: 'ATOM',
-    lexeme: 'def',
     row: 1,
     column: 7,
   });
-  expect(lexer.getNextToken()).toEqual({
+  expect(lexer.getNextToken()).toMatchObject({
     tokenKind: 'ATOM',
-    lexeme: 'ghi',
     row: 1,
     column: 11,
   });
-  expect(lexer.getNextToken()).toEqual({
+  expect(lexer.getNextToken()).toMatchObject({
     tokenKind: 'RIGHT_PARENTHESIS',
     row: 1,
     column: 14,
   });
-  expect(lexer.getNextToken()).toEqual({
+  expect(lexer.getNextToken()).toMatchObject({
     tokenKind: 'RIGHT_PARENTHESIS',
     row: 1,
     column: 15,
   });
-  expect(lexer.getNextToken()).toEqual({
+  expect(lexer.getNextToken()).toMatchObject({
     tokenKind: 'END_OF_INPUT',
     row: 1,
     column: 16,

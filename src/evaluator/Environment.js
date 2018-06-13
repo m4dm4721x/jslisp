@@ -5,38 +5,36 @@ import read from '../reader/Reader';
 import { type Expression } from '../expression/Expression';
 
 class Environment {
+  +parentEnvironment: Environment | typeof undefined;
   +map: Map<string, Expression>;
 
   static newDefaultEnvironment(): Environment {
-    const result: Environment = new Environment(new Map());
+    const environment: Environment = new Environment();
 
-    result.put('NIL', []);
-    result.put('t', 't');
+    environment.put('NIL', []);
+    environment.put('t', 't');
 
-    Evaluator.evaluate(read('(defun cadr (e) (car (cdr e)))'), result);
-    Evaluator.evaluate(read('(defun caddr (e) (car (cdr (cdr e))))'), result);
-    Evaluator.evaluate(read('(defun cdar (e) (cdr (car e)))'), result);
+    Evaluator.evaluate(read('(defun cadr (e) (car (cdr e)))'), environment);
+    Evaluator.evaluate(read('(defun caddr (e) (car (cdr (cdr e))))'), environment);
+    Evaluator.evaluate(read('(defun cdar (e) (cdr (car e)))'), environment);
 
-    Evaluator.evaluate(read('(defun null (x) (eq x (quote ())))'), result);
-    Evaluator.evaluate(read('(defun and (x y) (cond (x (cond (y (quote t)) ((quote t) (quote ()))))((quote t) (quote ()))))'), result);
-    Evaluator.evaluate(read('(defun not (x) (cond (x (quote ())) ((quote t) (quote t))))'), result);
+    Evaluator.evaluate(read('(defun null (x) (eq x (quote ())))'), environment);
+    Evaluator.evaluate(read('(defun and (x y) (cond (x (cond (y (quote t)) ((quote t) (quote ()))))((quote t) (quote ()))))'), environment);
+    Evaluator.evaluate(read('(defun not (x) (cond (x (quote ())) ((quote t) (quote t))))'), environment);
 
-    return result;
+    return environment;
   }
 
-  constructor(map: Map<string, Expression>) {
-    this.map = new Map(map);
-  }
-
-  clone(): Environment {
-    return new Environment(this.map);
+  constructor(parentEnvironment?: Environment) {
+    this.map = new Map();
+    this.parentEnvironment = parentEnvironment;
   }
 
   get(atom: string): Expression {
-    if (!this.map.has(atom)) {
+    if (!this.parentEnvironment && !this.map.has(atom)) {
       throw new Error(`atom '${atom}' has no value!`);
     }
-    return this.map.get(atom);
+    return this.map.get(atom) || this.parentEnvironment.get(atom);
   }
 
   put(atom: string, value: Expression): void {

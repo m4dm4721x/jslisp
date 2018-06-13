@@ -2,6 +2,10 @@
 
 import read from './Reader';
 
+test('dummy', () => {
+  expect(read('((a))')).toEqual([['a']]);
+});
+
 test('an empty input is parsed correctly', () => {
   expect(read('')).toBeUndefined();
 });

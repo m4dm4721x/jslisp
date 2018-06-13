@@ -118,7 +118,7 @@ class Evaluator {
     if (args.length !== parameters.length) {
       throw new Error('invalid number of args!');
     }
-    const extendedEnv: Environment = environment.clone();
+    const extendedEnv: Environment = new Environment(environment);
     for (let i = 0; i < parameters.length; i += 1) {
       extendedEnv.put(parameters[i], Evaluator.evaluate(args[i], environment));
     }
@@ -137,7 +137,7 @@ class Evaluator {
       throw new Error('label\'s second operand must be a list!');
     }
     const lambdaExpression = labelExpression[2];
-    const labelEnv: Environment = environment.clone();
+    const labelEnv: Environment = new Environment(environment);
     labelEnv.put(labeled, lambdaExpression);
     return Evaluator.lambda(lambdaExpression, args, labelEnv);
   }
@@ -202,7 +202,7 @@ class Evaluator {
   }
 
   static evaluate(expression: Expression, environment: Environment): Expression {
-    if (expression === undefined) {
+    if (!expression) {
       return undefined;
     }
     if (typeof expression === 'string') {

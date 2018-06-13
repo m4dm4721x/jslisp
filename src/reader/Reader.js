@@ -8,6 +8,8 @@ function reportError(token: Token) {
   throw new Error(`syntax error at (${token.row}:${token.column})`);
 }
 
+ // 'a , '(a)
+
 function read(input: string): Expression {
   const lexer: Lexer = new Lexer(input);
   let result: Expression;
@@ -31,9 +33,9 @@ function read(input: string): Expression {
         reportError(token);
       }
     } else if (stack.length === 0) {
-      result = token.lexeme;
+      result = token.lexeme();
     } else {
-      stack[stack.length - 1].push(token.lexeme);
+      stack[stack.length - 1].push(token.lexeme());
     }
     token = lexer.getNextToken();
   }

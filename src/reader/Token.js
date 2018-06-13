@@ -4,15 +4,15 @@ import type { TokenKind } from './TokenKind';
 
 class Token {
   +tokenKind: TokenKind;
-  +lexeme: string;
+  +lexeme: () => string;
   +row: number;
   +column: number;
 
-  constructor(tokenKind: TokenKind, row: number, column: number, lexeme?: string) {
+  constructor(tokenKind: TokenKind, row: number, column: number, lexeme?: () => string) {
     this.tokenKind = tokenKind;
     this.row = row;
     this.column = column;
-    if (lexeme !== undefined) {
+    if (lexeme) {
       this.lexeme = lexeme;
     }
   }

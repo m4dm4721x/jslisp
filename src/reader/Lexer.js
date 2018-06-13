@@ -46,20 +46,19 @@ class Lexer {
     this.column += 1;
   }
 
-  newToken(tokenKind: TokenKind) {
+  newToken(tokenKind: TokenKind): Token {
     const token = new Token(tokenKind, this.row, this.column);
     this.consumeCharacter();
     return token;
   }
 
-  newAtom() {
+  scanAtom(): Token {
     const startPosition = this.position;
     do {
       this.position += 1;
     } while (this.hasMoreInput() && isAtomCharacter(this.currentCharacter()));
-    const lexeme = this.input.substring(startPosition, this.position);
-    const result = new Token('ATOM', this.row, this.column, lexeme);
-    this.column += lexeme.length;
+    const result = new Token('ATOM', this.row, this.column, () => this.input.substring(startPosition, this.position));
+    this.column += this.position - startPosition;
     return result;
   }
 
@@ -81,9 +80,9 @@ class Lexer {
           return this.newToken('RIGHT_PARENTHESIS');
         default:
           if (isAtomCharacter(this.currentCharacter())) {
-            return this.newAtom();
+            return this.scanAtom();
           }
-          throw new Error(`illegal character at position ${this.position}`);
+          throw new Error(`illegal character ${this.currentCharacter()} at position ${this.position}`);
       }
     }
     return this.newToken('END_OF_INPUT');
